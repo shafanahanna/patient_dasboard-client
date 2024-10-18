@@ -12,6 +12,7 @@ The Patient Dashboard Frontend is a web application built using React. It provid
 - **Patient Management**: View, add, update, and delete patient details.
 - **Authorization Requests**: Create and manage authorization requests for treatments.
 - **Lab Results Management**: Upload and view lab results associated with patients.
+- **Search Functionality**:Admin can filter the patients from the patientlist and authorization formlist.
 
 ## Tech Stack
 
