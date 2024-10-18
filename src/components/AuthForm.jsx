@@ -54,6 +54,7 @@ const AuthForm = () => {
         status,
       });
       console.log(response.data);
+      // Reset form fields
       setPatientId("");
       setTreatment("");
       setDoctorNotes("");

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import instance from "../axios/axios_instance"; 
-import { FaSearch } from "react-icons/fa"; 
+import instance from "../axios/axios_instance";
+import { FaSearch } from "react-icons/fa";
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
@@ -26,7 +26,7 @@ const PatientList = () => {
   );
 
   const handlePatientClick = (patientId) => {
-    navigate(`/patients/${patientId}`); 
+    navigate(`/patients/${patientId}`);
   };
 
   return (
@@ -52,10 +52,18 @@ const PatientList = () => {
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
           <thead className="bg-teal-500 text-white">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium border-b">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-medium border-b">Age</th>
-              <th className="px-6 py-3 text-left text-sm font-medium border-b">Condition</th>
-              <th className="px-6 py-3 text-left text-sm font-medium border-b">Action</th>
+              <th className="px-6 py-3 text-left text-sm font-medium border-b">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium border-b">
+                Age
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium border-b">
+                Condition
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium border-b">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>

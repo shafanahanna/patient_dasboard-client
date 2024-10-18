@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaCalendarAlt,
-  FaHeartbeat,
   FaPills,
   FaFlask,
   FaStethoscope,
-} from "react-icons/fa"; 
+  FaTrashAlt,
+} from "react-icons/fa";
 import instance from "../axios/axios_instance";
 
 const PatientDetails = () => {
   const { patientId } = useParams();
+  const navigate = useNavigate(); 
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState("");
 
@@ -23,12 +24,27 @@ const PatientDetails = () => {
         setPatient(response.data);
       } catch (error) {
         setError("Error fetching patient details");
-        console.error("Error:", error);
+        console.error("Error:", error.response?.data || error);
       }
     };
 
     fetchPatientDetails();
   }, [patientId]);
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this patient?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await instance.delete(`/patients/${patientId}`);
+      navigate("/dashboard/patients"); 
+    } catch (error) {
+      setError("Error deleting patient");
+      console.error("Error:", error.response?.data || error);
+    }
+  };
 
   if (error) return <p className="text-red-600 text-center mt-4">{error}</p>;
   if (!patient)
@@ -63,17 +79,21 @@ const PatientDetails = () => {
           <FaPills className="mr-3 text-teal-500" /> Medications
         </h3>
         <ul className="space-y-4">
-          {patient.medications.map((medication, index) => (
-            <li
-              key={index}
-              className="bg-teal-100 text-teal-800 p-4 rounded-lg shadow-md flex justify-between items-center"
-            >
-              <span>{medication.name}</span>
-              <span className="text-teal-600">
-                {new Date(medication.prescribedDate).toLocaleDateString()}
-              </span>
-            </li>
-          ))}
+          {patient.medications?.length > 0 ? (
+            patient.medications.map((medication, index) => (
+              <li
+                key={index}
+                className="bg-teal-100 text-teal-800 p-4 rounded-lg shadow-md flex justify-between items-center"
+              >
+                <span>{medication.name}</span>
+                <span className="text-teal-600">
+                  {new Date(medication.prescribedDate).toLocaleDateString()}
+                </span>
+              </li>
+            ))
+          ) : (
+            <li>No medications available</li>
+          )}
         </ul>
       </div>
 
@@ -82,18 +102,31 @@ const PatientDetails = () => {
           <FaFlask className="mr-3 text-teal-500" /> Lab Results
         </h3>
         <ul className="space-y-4">
-          {patient.labResults.map((result, index) => (
-            <li
-              key={index}
-              className="bg-teal-100 text-teal-800 p-4 rounded-lg shadow-md flex justify-between items-center"
-            >
-              <span>{result.description}</span>
-              <span className="text-teal-600">
-                {new Date(result.date).toLocaleDateString()}
-              </span>
-            </li>
-          ))}
+          {patient.labResults?.length > 0 ? (
+            patient.labResults.map((result, index) => (
+              <li
+                key={index}
+                className="bg-teal-100 text-teal-800 p-4 rounded-lg shadow-md flex justify-between items-center"
+              >
+                <span>{result.description}</span>
+                <span className="text-teal-600">
+                  {new Date(result.date).toLocaleDateString()}
+                </span>
+              </li>
+            ))
+          ) : (
+            <li>No lab results available</li>
+          )}
         </ul>
+      </div>
+
+      <div className="mt-8">
+        <button
+          onClick={handleDelete}
+          className=" text-red-700 py-2 px-4 rounded-lg flex items-center shadow-md hover:bg-red-700"
+        >
+          <FaTrashAlt className="mr-2" /> Delete Patient
+        </button>
       </div>
     </div>
   );

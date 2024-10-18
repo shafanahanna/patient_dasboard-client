@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import instance from "../axios/axios_instance";
+import ClipLoader from "react-spinners/ClipLoader"; 
 
 const AddPatient = () => {
   const [name, setName] = useState("");
@@ -9,9 +10,11 @@ const AddPatient = () => {
     { name: "", prescribedDate: "" },
   ]);
   const [labResults, setLabResults] = useState([{ description: "", date: "" }]);
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); 
     try {
       const response = await instance.post("/patients", {
         name,
@@ -21,6 +24,7 @@ const AddPatient = () => {
         labResults,
       });
       console.log(response.data);
+      
       setName("");
       setAge("");
       setCondition("");
@@ -28,6 +32,8 @@ const AddPatient = () => {
       setLabResults([{ description: "", date: "" }]);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -52,16 +58,14 @@ const AddPatient = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
-      {" "}
+    <div className="flex items-center justify-center min-h-screen">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md"
       >
-        {" "}
         <h2 className="text-xl font-semibold mb-4 text-center text-teal-600">
           Add Patient
-        </h2>{" "}
+        </h2>
         <input
           type="text"
           placeholder="Name"
@@ -161,10 +165,15 @@ const AddPatient = () => {
         </div>
         <button
           type="submit"
-          className="w-full py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition duration-200"
+          disabled={loading} 
+          className="w-full py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition duration-200 relative"
         >
-          Add Patient
-        </button>{" "}
+          {loading ? (
+            <ClipLoader size={20} color="#ffffff" loading={loading} /> 
+          ) : (
+            "Add Patient"
+          )}
+        </button>
       </form>
     </div>
   );

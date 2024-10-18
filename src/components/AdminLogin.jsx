@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import instance from "../axios/axios_instance";
+import { ClipLoader } from "react-spinners"; 
 
 const AdminLogin = ({ setIsAdmin }) => {
   const navigate = useNavigate();
@@ -107,8 +108,16 @@ const AdminLogin = ({ setIsAdmin }) => {
               formik.isSubmitting
                 ? "cursor-not-allowed opacity-50"
                 : "hover:bg-teal-700"
-            } transition duration-200 ease-in-out transform hover:scale-105`}
+            } transition duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center`}
           >
+            {formik.isSubmitting ? (
+              <ClipLoader
+                color="#ffffff" 
+                loading={formik.isSubmitting} 
+                size={20} 
+                className="mr-2" 
+              />
+            ) : null}
             {formik.isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
