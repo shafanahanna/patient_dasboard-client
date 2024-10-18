@@ -4,15 +4,12 @@ import {
   FaUser,
   FaUserPlus,
   FaClipboardList,
-  
-  
   FaBars,
   FaTimes,
-} from "react-icons/fa"; 
+} from "react-icons/fa";
 import { FaFileWaveform } from "react-icons/fa6";
 import { RiLogoutBoxLine } from "react-icons/ri";
-
-
+import { FaUserDoctor } from "react-icons/fa6";
 
 const Dashboard = ({ setIsAdmin }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -21,7 +18,7 @@ const Dashboard = ({ setIsAdmin }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAdmin(false);
-    navigate("/"); 
+    navigate("/");
   };
 
   const toggleSidebar = () => {
@@ -116,10 +113,11 @@ const Dashboard = ({ setIsAdmin }) => {
         </nav>
       </div>
 
-      
-      <div className="flex-1 p-6 bg-gray-100">
+      <div className=" flex-1 p-6 bg-gray-100">
         <h1 className="text-3xl font-bold text-center italic mb-6 text-teal-700 p-2">
-          Patient Health Dashboard
+          <span className="flex justify-center items-center gap-2">
+            Patient Health Dashboard <FaUserDoctor />
+          </span>
         </h1>
         <Outlet />
       </div>
